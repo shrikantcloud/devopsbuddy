@@ -19,13 +19,13 @@ import com.devopsbuddy.backend.persistence.domain.backend.UserRole;
 import com.devopsbuddy.backend.persistence.repositories.PlanRepository;
 import com.devopsbuddy.backend.persistence.repositories.RoleRepository;
 import com.devopsbuddy.backend.persistence.repositories.UserRepository;
+import com.devopsbuddy.enums.PlansEnum;
+import com.devopsbuddy.enums.RolesEnum;
+import com.devopsbuddy.utils.UserUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = DevopsbuddyApplication.class)
 public class RepositoriesIntegrationTest {
-    
-    private static final Integer BASIC_PLAN_ID = 1;
-    private static final Integer BASIC_ROLE_ID = 1;
     
     @Autowired
     private PlanRepository planRepository;
@@ -35,7 +35,7 @@ public class RepositoriesIntegrationTest {
     private UserRepository userRepository;
     
     @Before
-    public void ini() {
+    public void init() {
         Assert.assertNotNull(planRepository);
         Assert.assertNotNull(roleRepository);
         Assert.assertNotNull(userRepository);
@@ -43,33 +43,31 @@ public class RepositoriesIntegrationTest {
     
     @Test
     public void testCreateNewPlan() throws Exception {
-        Plan basicPlan = createBasicPlan();
+        Plan basicPlan = createPlan(PlansEnum.BASIC);
         planRepository.save(basicPlan);
-        Plan retrievedPlan = planRepository.findOne(BASIC_PLAN_ID);
+        Plan retrievedPlan = planRepository.findOne(PlansEnum.BASIC.getId());
         Assert.assertNotNull(retrievedPlan);
     }
     
     @Test
     public void testCreateNewRole() throws Exception {
-        Role userRole = createBasicRole();
+        Role userRole = createRole(RolesEnum.BASIC);
         roleRepository.save(userRole);
-        Role retrievedRole = roleRepository.findOne(BASIC_ROLE_ID);
+        Role retrievedRole = roleRepository.findOne(RolesEnum.BASIC.getId());
         Assert.assertNotNull(retrievedRole);
     }
     
     @Test
     public void createNewUser() throws Exception {
-        Plan basicPlan = createBasicPlan();
+        Plan basicPlan = createPlan(PlansEnum.BASIC);
         planRepository.save(basicPlan);
         
-        User basicUser = createBasicUser();
+        User basicUser = UserUtils.createBasicUser();
         basicUser.setPlan(basicPlan);
         
-        Role basicRole = createBasicRole();
+        Role basicRole = createRole(RolesEnum.BASIC);
         Set<UserRole> userRoles = new HashSet<>();
-        UserRole userRole = new UserRole();
-        userRole.setUser(basicUser);
-        userRole.setRole(basicRole);
+        UserRole userRole = new UserRole(basicUser, basicRole);
         userRoles.add(userRole);
         
         basicUser.getUserRoles().addAll(userRoles);
@@ -91,33 +89,20 @@ public class RepositoriesIntegrationTest {
         }
     }
 
-    private User createBasicUser() {
-        User user = new User();
-        user.setUsername("basicUser");
-        user.setPassword("secret");
-        user.setEmail("s.a@g.com");
-        user.setFirstName("firstName");
-        user.setLastName("lastName");
-        user.setPhoneNumber("123456789123");
-        user.setCountry("IN");
-        user.setEnabled(true);
-        user.setDescription("A basic User");
-        user.setProfileImageUrl("/images/sa.jpg");
-        return user;
-    }
-
-    private Plan createBasicPlan() {
-        Plan plan = new Plan();
-        plan.setId(BASIC_PLAN_ID);
-        plan.setName("Basic");
-        return plan;
+    private Plan createPlan(PlansEnum plansEnum) {
+//        Plan plan = new Plan();
+//        plan.setId(PlansEnum.BASIC.getId());
+//        plan.setName("Basic");
+//        return plan;
+        return new Plan(plansEnum);
     }
     
-    private Role createBasicRole() {
-        Role role = new Role();
-        role.setId(BASIC_ROLE_ID);
-        role.setName("ROLE_USER");
-        return role;
+    private Role createRole(RolesEnum rolesEnum) {
+//        Role role = new Role();
+//        role.setId(rolesEnum.getId());
+//        role.setName(rolesEnum.getRoleName());
+//        return role;
+        return new Role(rolesEnum);
     }
 
 }

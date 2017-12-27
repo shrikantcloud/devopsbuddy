@@ -14,7 +14,7 @@ import javax.persistence.Table;
 public class UserRole implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
+    
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -24,6 +24,15 @@ public class UserRole implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")
     private Role              role;
+    
+    public UserRole() {
+        
+    }
+    
+    public UserRole(User user, Role role) {
+        this.user = user;
+        this.role = role;
+    }
 
     public User getUser() {
         return user;

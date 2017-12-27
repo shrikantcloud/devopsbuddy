@@ -1,0 +1,22 @@
+URL: https://www.udemy.com/become-a-full-stack-developer-with-spring-aws-and-stripe
+
+Git Steps:-
+<current branch: logging>
+git add *
+git commit -m "Added logging setup"
+git push
+git checkout develop
+<branch changes to develop>
+git merge logging
+git push
+
+for new Dev again: branch name - about 
+git checkout -b about
+git push -u origin about
+
+
+Thymeleaf Operator:-
+@{..} = hyperlink
+#{..} = i18n property
+${..} = Select an object from the map within the context
+*{..} = Select a property in that object [ *{..} works in conjunction with ${..} ]
