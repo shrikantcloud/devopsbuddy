@@ -20,20 +20,20 @@ import com.devopsbuddy.enums.PlansEnum;
 public class UserService {
 
     @Autowired
-    private PlanRepository planRepository;
+    private PlanRepository        planRepository;
     @Autowired
-    private RoleRepository roleRepository;
+    private RoleRepository        roleRepository;
     @Autowired
-    private UserRepository userRepository;
+    private UserRepository        userRepository;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
     @Transactional
     public User createUser(User user, PlansEnum plansEnum, Set<UserRole> userRoles) {
-        
+
         String encryptedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encryptedPassword);
-        
+
         Plan plan = new Plan(plansEnum);
         if (!planRepository.exists(plansEnum.getId())) {
             planRepository.save(plan);

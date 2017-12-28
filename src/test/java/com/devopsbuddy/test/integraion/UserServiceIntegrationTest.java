@@ -27,15 +27,15 @@ public class UserServiceIntegrationTest {
 
     @Autowired
     private UserService userService;
-    
+
     @Rule
-    public TestName testName = new TestName();
+    public TestName     testName = new TestName();
 
     @Test
     public void testCreateUser() throws Exception {
         String username = testName.getMethodName();
         String email = username + "@gmail.com";
-                
+
         Set<UserRole> userRoles = new HashSet<>();
         User basicUser = UserUtils.createBasicUser(username, email);
         userRoles.add(new UserRole(basicUser, new Role(RolesEnum.BASIC)));

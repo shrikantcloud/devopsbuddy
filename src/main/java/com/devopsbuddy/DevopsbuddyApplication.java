@@ -26,13 +26,13 @@ public class DevopsbuddyApplication implements CommandLineRunner {
 
     @Autowired
     private UserService         userService;
-    
+
     @Value("${webmaster.username}")
-    private String webmasterUsername;
+    private String              webmasterUsername;
     @Value("${webmaster.password}")
-    private String webmasterPassword;
+    private String              webmasterPassword;
     @Value("${webmaster.email}")
-    private String webmasterEmail;
+    private String              webmasterEmail;
 
     public static void main(String[] args) {
         SpringApplication.run(DevopsbuddyApplication.class, args);
