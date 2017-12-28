@@ -20,11 +20,11 @@ import com.devopsbuddy.utils.UserUtils;
 
 @SpringBootApplication
 public class DevopsbuddyApplication implements CommandLineRunner {
-    
+
     private static final Logger LOG = LoggerFactory.getLogger(DevopsbuddyApplication.class);
 
     @Autowired
-    private UserService userService;
+    private UserService         userService;
 
     public static void main(String[] args) {
         SpringApplication.run(DevopsbuddyApplication.class, args);
@@ -34,9 +34,9 @@ public class DevopsbuddyApplication implements CommandLineRunner {
     public void run(String... arg0) throws Exception {
         User user = UserUtils.createBasicUser();
         Set<UserRole> userRoles = new HashSet<>();
-        userRoles.add(new UserRole(user, new Role(RolesEnum.BASIC)));
+        userRoles.add(new UserRole(user, new Role(RolesEnum.PRO)));
         LOG.debug("Creating user with username: {}", user.getUsername());
         userService.createUser(user, PlansEnum.PRO, userRoles);
-        LOG.info("User {} created!" , user.getUsername());
+        LOG.info("User {} created!", user.getUsername());
     }
 }

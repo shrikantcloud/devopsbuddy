@@ -21,12 +21,12 @@ public class DevelopmentConfig {
     public EmailService emailService() {
         return new MockEmailService();
     }
-    
+
     @Bean
-    public ServletRegistrationBean h2ConsoleServletRegistration () {
+    public ServletRegistrationBean h2ConsoleServletRegistration() {
         ServletRegistrationBean bean = new ServletRegistrationBean(new WebServlet());
         bean.addUrlMappings(H2_CONSOLE_URL);
         return bean;
     }
-   
+
 }

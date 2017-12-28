@@ -3,11 +3,11 @@ package com.devopsbuddy.utils;
 import com.devopsbuddy.backend.persistence.domain.backend.User;
 
 public class UserUtils {
-    
+
     private UserUtils() throws Exception {
-        throw new AssertionError("Non Instantiable") ;
+        throw new AssertionError("Non Instantiable");
     }
-        
+
     public static User createBasicUser() {
         User user = new User();
         user.setUsername("basicUser");
@@ -22,5 +22,5 @@ public class UserUtils {
         user.setProfileImageUrl("/images/sa.jpg");
         return user;
     }
-    
+
 }

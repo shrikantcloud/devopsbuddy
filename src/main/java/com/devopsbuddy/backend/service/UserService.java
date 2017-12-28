@@ -17,23 +17,23 @@ import com.devopsbuddy.enums.PlansEnum;
 @Service
 @Transactional(readOnly = true)
 public class UserService {
-    
+
     @Autowired
     private PlanRepository planRepository;
     @Autowired
     private RoleRepository roleRepository;
     @Autowired
     private UserRepository userRepository;
-    
+
     @Transactional
     public User createUser(User user, PlansEnum plansEnum, Set<UserRole> userRoles) {
         Plan plan = new Plan(plansEnum);
-        if(!planRepository.exists(plansEnum.getId())) {
+        if (!planRepository.exists(plansEnum.getId())) {
             planRepository.save(plan);
         }
-        
+
         user.setPlan(plan);
-        for(UserRole ur : userRoles) {
+        for (UserRole ur : userRoles) {
             roleRepository.save(ur.getRole());
         }
         user.getUserRoles().addAll(userRoles);

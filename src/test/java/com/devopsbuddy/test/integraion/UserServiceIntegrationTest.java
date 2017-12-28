@@ -22,16 +22,16 @@ import com.devopsbuddy.utils.UserUtils;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = DevopsbuddyApplication.class)
 public class UserServiceIntegrationTest {
-    
+
     @Autowired
     private UserService userService;
-    
+
     @Test
-    public void testCreateUser() throws Exception{
+    public void testCreateUser() throws Exception {
         Set<UserRole> userRoles = new HashSet<>();
         User basicUser = UserUtils.createBasicUser();
         userRoles.add(new UserRole(basicUser, new Role(RolesEnum.BASIC)));
-        
+
         User user = userService.createUser(basicUser, PlansEnum.BASIC, userRoles);
         Assert.assertNotNull(user);
         Assert.assertNotNull(user.getId());

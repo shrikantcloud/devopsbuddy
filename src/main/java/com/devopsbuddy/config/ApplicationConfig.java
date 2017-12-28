@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
-@EnableJpaRepositories (basePackages = "com.devopsbuddy.backend.persistence.repositories")
-@EntityScan (basePackages = "com.devopsbuddy.backend")
+@EnableJpaRepositories(basePackages = "com.devopsbuddy.backend.persistence.repositories")
+@EntityScan(basePackages = "com.devopsbuddy.backend")
 @EnableTransactionManagement
 public class ApplicationConfig {
 
