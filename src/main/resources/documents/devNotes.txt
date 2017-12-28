@@ -1,5 +1,5 @@
 URL: https://www.udemy.com/become-a-full-stack-developer-with-spring-aws-and-stripe
-
+==================
 Git Steps:-
 <current branch: logging>
 git add *
@@ -13,7 +13,13 @@ git push
 for new Dev again: branch name - about 
 git checkout -b about
 git push -u origin about
-
+===================
+H2 Db:-
+url: localhost:8080/console
+JDBC URL: jdbc:h2:mem:testdb
+username: sa
+pwd: <blank>
+===================
 
 Thymeleaf Operator:-
 @{..} = hyperlink
