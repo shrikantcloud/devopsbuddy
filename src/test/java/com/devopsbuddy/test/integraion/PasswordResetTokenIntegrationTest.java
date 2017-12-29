@@ -14,6 +14,7 @@ import org.junit.Test;
 import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -29,11 +30,13 @@ import junit.framework.Assert;
 @SpringBootTest(classes = DevopsbuddyApplication.class)
 public class PasswordResetTokenIntegrationTest extends AbstractIntegrationTest {
 
+    @Value("${token.expiration.length.minutes}")
+    private int expirationTimeInMinutes;
+
     @Autowired
     private PasswordResetTokenRepository passwordResetTokenRepository;
 
-    @Rule
-    public TestName                      testName;
+    @Rule public TestName testName = new TestName();
 
     @Before
     public void init() {
@@ -42,9 +45,11 @@ public class PasswordResetTokenIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     public void testTokenExpirationLength() throws Exception {
+
         User user = createUser(testName);
         Assert.assertNotNull(user);
         Assert.assertNotNull(user.getId());
+
 
         LocalDateTime now = LocalDateTime.now(Clock.systemUTC());
         String token = UUID.randomUUID().toString();
@@ -59,21 +64,24 @@ public class PasswordResetTokenIntegrationTest extends AbstractIntegrationTest {
     }
 
     @Test
-    public void testFindTokenByValue() throws Exception {
+    public void testFindTokenByTokenValue() throws Exception {
+
         User user = createUser(testName);
         String token = UUID.randomUUID().toString();
         LocalDateTime now = LocalDateTime.now(Clock.systemUTC());
 
         createPasswordResetToken(token, user, now);
 
-        PasswordResetToken retrievedPasswordToken = passwordResetTokenRepository.findByToken(token);
-        Assert.assertNotNull(retrievedPasswordToken);
-        Assert.assertNotNull(retrievedPasswordToken.getId());
-        Assert.assertNotNull(retrievedPasswordToken.getUser());
+        PasswordResetToken retrievedPasswordResetToken = passwordResetTokenRepository.findByToken(token);
+        Assert.assertNotNull(retrievedPasswordResetToken);
+        Assert.assertNotNull(retrievedPasswordResetToken.getId());
+        Assert.assertNotNull(retrievedPasswordResetToken.getUser());
+
     }
 
     @Test
     public void testDeleteToken() throws Exception {
+
         User user = createUser(testName);
         String token = UUID.randomUUID().toString();
         LocalDateTime now = LocalDateTime.now(Clock.systemUTC());
@@ -84,10 +92,12 @@ public class PasswordResetTokenIntegrationTest extends AbstractIntegrationTest {
 
         PasswordResetToken shouldNotExistToken = passwordResetTokenRepository.findOne(tokenId);
         Assert.assertNull(shouldNotExistToken);
+
     }
 
     @Test
     public void testCascadeDeleteFromUserEntity() throws Exception {
+
         User user = createUser(testName);
         String token = UUID.randomUUID().toString();
         LocalDateTime now = LocalDateTime.now(Clock.systemUTC());
@@ -96,12 +106,16 @@ public class PasswordResetTokenIntegrationTest extends AbstractIntegrationTest {
         passwordResetToken.getId();
 
         userRepository.delete(user.getId());
+
         Set<PasswordResetToken> shouldBeEmpty = passwordResetTokenRepository.findAllByUserId(user.getId());
         Assert.assertTrue(shouldBeEmpty.isEmpty());
+
+
     }
 
     @Test
-    public void testMultipleUsersAreReturnedWhenQueryingByUserId() throws Exception {
+    public void testMultipleTokensAreReturnedWhenQueringByUserId() throws Exception {
+
         User user = createUser(testName);
         LocalDateTime now = LocalDateTime.now(Clock.systemUTC());
 
@@ -116,13 +130,26 @@ public class PasswordResetTokenIntegrationTest extends AbstractIntegrationTest {
 
         passwordResetTokenRepository.save(tokens);
 
-        User foundUser = userRepository.findOne(user.getId());
+        User founduser = userRepository.findOne(user.getId());
 
-        Set<PasswordResetToken> actualTokens = passwordResetTokenRepository.findAllByUserId(foundUser.getId());
-        Assert.assertTrue(actualTokens.size() == 1);
+        Set<PasswordResetToken> actualTokens = passwordResetTokenRepository.findAllByUserId(founduser.getId());
+        Assert.assertTrue(actualTokens.size() == tokens.size());
         List<String> tokensAsList = tokens.stream().map(prt -> prt.getToken()).collect(Collectors.toList());
         List<String> actualTokensAsList = actualTokens.stream().map(prt -> prt.getToken()).collect(Collectors.toList());
         Assert.assertEquals(tokensAsList, actualTokensAsList);
+
     }
 
+
+    //------------------> Private methods
+
+    private PasswordResetToken createPasswordResetToken(String token, User user, LocalDateTime now) {
+
+
+        PasswordResetToken passwordResetToken = new PasswordResetToken(token, user, now, expirationTimeInMinutes);
+        passwordResetTokenRepository.save(passwordResetToken);
+        Assert.assertNotNull(passwordResetToken.getId());
+        return passwordResetToken;
+
+    }
 }

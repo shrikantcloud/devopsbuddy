@@ -1,14 +1,11 @@
 package com.devopsbuddy.test.integraion;
 
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.rules.TestName;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 
-import com.devopsbuddy.backend.persistence.domain.backend.PasswordResetToken;
 import com.devopsbuddy.backend.persistence.domain.backend.Plan;
 import com.devopsbuddy.backend.persistence.domain.backend.Role;
 import com.devopsbuddy.backend.persistence.domain.backend.User;
@@ -20,13 +17,7 @@ import com.devopsbuddy.enums.PlansEnum;
 import com.devopsbuddy.enums.RolesEnum;
 import com.devopsbuddy.utils.UserUtils;
 
-import junit.framework.Assert;
-
-@SuppressWarnings("deprecation")
 public abstract class AbstractIntegrationTest {
-
-    @Value("${token.expiration.length.minutes}")
-    protected int            expirationTimeInMinutes;
 
     @Autowired
     protected PlanRepository planRepository;
@@ -71,14 +62,6 @@ public abstract class AbstractIntegrationTest {
     }
 
     protected User createUser(TestName testName) {
-        String username = "testUser";
-        return createUser(username, username + "@gmail.com");
+        return createUser(testName.getMethodName(), testName.getMethodName() + "@gmail.com");
     }
-
-    protected PasswordResetToken createPasswordResetToken(String token, User user, LocalDateTime now) {
-        PasswordResetToken passwordResetToken = new PasswordResetToken(token, user, now, expirationTimeInMinutes);
-        Assert.assertNotNull(passwordResetToken.getId());
-        return passwordResetToken;
-    }
-
 }

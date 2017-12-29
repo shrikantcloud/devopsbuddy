@@ -11,12 +11,8 @@ import com.devopsbuddy.backend.persistence.domain.backend.PasswordResetToken;
 @Repository
 public interface PasswordResetTokenRepository extends CrudRepository<PasswordResetToken, Long> {
 
-    public static final String PASSWORD_RESET_TOKEN_SQL = "select ptr from PasswordResetToken ptr " + "inner join ptr.user u "
-                                                          + "where u.id = ?1 ";
+    PasswordResetToken findByToken(String token);
 
-    public PasswordResetToken findByToken(String token);
-
-    @Query(PASSWORD_RESET_TOKEN_SQL)
-    public Set<PasswordResetToken> findAllByUserId(long userId);
-
+    @Query("select ptr from PasswordResetToken ptr inner join ptr.user u where ptr.user.id = ?1")
+    Set<PasswordResetToken> findAllByUserId(long userId);
 }
