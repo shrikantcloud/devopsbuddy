@@ -31,12 +31,13 @@ import junit.framework.Assert;
 public class PasswordResetTokenIntegrationTest extends AbstractIntegrationTest {
 
     @Value("${token.expiration.length.minutes}")
-    private int expirationTimeInMinutes;
+    private int                          expirationTimeInMinutes;
 
     @Autowired
     private PasswordResetTokenRepository passwordResetTokenRepository;
 
-    @Rule public TestName testName = new TestName();
+    @Rule
+    public TestName                      testName = new TestName();
 
     @Before
     public void init() {
@@ -49,7 +50,6 @@ public class PasswordResetTokenIntegrationTest extends AbstractIntegrationTest {
         User user = createUser(testName);
         Assert.assertNotNull(user);
         Assert.assertNotNull(user.getId());
-
 
         LocalDateTime now = LocalDateTime.now(Clock.systemUTC());
         String token = UUID.randomUUID().toString();
@@ -110,7 +110,6 @@ public class PasswordResetTokenIntegrationTest extends AbstractIntegrationTest {
         Set<PasswordResetToken> shouldBeEmpty = passwordResetTokenRepository.findAllByUserId(user.getId());
         Assert.assertTrue(shouldBeEmpty.isEmpty());
 
-
     }
 
     @Test
@@ -140,11 +139,9 @@ public class PasswordResetTokenIntegrationTest extends AbstractIntegrationTest {
 
     }
 
-
-    //------------------> Private methods
+    // ------------------> Private methods
 
     private PasswordResetToken createPasswordResetToken(String token, User user, LocalDateTime now) {
-
 
         PasswordResetToken passwordResetToken = new PasswordResetToken(token, user, now, expirationTimeInMinutes);
         passwordResetTokenRepository.save(passwordResetToken);

@@ -20,7 +20,7 @@ import com.devopsbuddy.enums.PlansEnum;
 @Service
 @Transactional(readOnly = true)
 public class UserService {
-    private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
+    private static final Logger   LOG = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
     private PlanRepository        planRepository;
@@ -50,7 +50,7 @@ public class UserService {
         userRepository.save(user);
         return user;
     }
-    
+
     @Transactional
     public void updateUserPassword(long userId, String password) throws Exception {
         String encodedPassword = passwordEncoder.encode(password);

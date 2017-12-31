@@ -22,7 +22,7 @@ public class PasswordResetTokenServiceTest extends AbstractServiceIntegrationTes
     private PasswordResetTokenService passwordResetTokenService;
 
     @Rule
-    public TestName                          testName = new TestName();
+    public TestName                   testName = new TestName();
 
     @Test
     public void testCreateNewTokenForUserEmail() throws Exception {
@@ -32,15 +32,15 @@ public class PasswordResetTokenServiceTest extends AbstractServiceIntegrationTes
         Assert.assertNotNull(passwordRestToken);
         Assert.assertNotNull(passwordRestToken.getToken());
     }
-    
+
     @Test
-    public void testFindByToken() throws Exception{
+    public void testFindByToken() throws Exception {
         User user = createUser(testName);
 
         PasswordResetToken passwordResetToken = passwordResetTokenService.createPasswordResetTokenForEmail(user.getEmail());
         Assert.assertNotNull(passwordResetToken);
         Assert.assertNotNull(passwordResetToken.getToken());
-        
+
         PasswordResetToken token = passwordResetTokenService.findByToken(passwordResetToken.getToken());
         Assert.assertNotNull(token);
     }

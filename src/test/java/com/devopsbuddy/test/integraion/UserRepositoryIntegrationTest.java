@@ -52,8 +52,8 @@ public class UserRepositoryIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     public void createNewUser() throws Exception {
-        String username = testName.getMethodName()+"a";
-        String email = testName.getMethodName() +"a"+ "@gmail.com";
+        String username = testName.getMethodName() + "a";
+        String email = testName.getMethodName() + "a" + "@gmail.com";
 
         User basicUser = createUser(username, email);
 
@@ -71,12 +71,12 @@ public class UserRepositoryIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     public void testDeleteUser() throws Exception {
-        String username = testName.getMethodName()+"a";
-        String email = username +"a"+ "@gmail.com";
+        String username = testName.getMethodName() + "a";
+        String email = username + "a" + "@gmail.com";
         User basicUser = createUser(username, email);
         userRepository.delete(basicUser.getId());
     }
-    
+
     @Test
     public void testGetUserByEmail() throws Exception {
         User user = createUser(testName);
@@ -84,17 +84,17 @@ public class UserRepositoryIntegrationTest extends AbstractIntegrationTest {
         Assert.assertNotNull(newlyFoundUser);
         Assert.assertNotNull(newlyFoundUser.getId());
     }
-    
+
     @Test
-    public void testUpdateUserPassword() throws Exception{
+    public void testUpdateUserPassword() throws Exception {
         User user = createUser(testName);
         Assert.assertNotNull(user);
         Assert.assertNotNull(user.getId());
-        
+
         String newPassword = UUID.randomUUID().toString();
-        
+
         userRepository.updateUserPassword(user.getId(), newPassword);
-        
+
         user = userRepository.findOne(user.getId());
         Assert.assertEquals(newPassword, user.getPassword());
     }

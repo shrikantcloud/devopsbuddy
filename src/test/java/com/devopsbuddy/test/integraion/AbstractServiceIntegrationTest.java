@@ -15,10 +15,10 @@ import com.devopsbuddy.enums.RolesEnum;
 import com.devopsbuddy.utils.UserUtils;
 
 public abstract class AbstractServiceIntegrationTest {
-    
+
     @Autowired
     protected UserService userService;
-    
+
     protected User createUser(TestName testName) {
         String username = testName.getMethodName();
         String email = username + "@gmail.com";

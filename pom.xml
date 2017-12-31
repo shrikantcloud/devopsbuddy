@@ -76,6 +76,12 @@
 			<artifactId>logback-classic</artifactId>
 		</dependency>
 		
+		<!-- Hibernate Validator -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+		</dependency>
+		
 		<!-- Test Dependency -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -85,6 +91,12 @@
 		<dependency>
 			<groupId>org.springframework.ws</groupId>
 			<artifactId>spring-ws-test</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>uk.co.jemos.podam</groupId>
+			<artifactId>podam</artifactId>
+			<version>6.0.2.RELEASE</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
