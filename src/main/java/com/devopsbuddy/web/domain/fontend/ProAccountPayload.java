@@ -3,6 +3,8 @@ package com.devopsbuddy.web.domain.fontend;
 
 public class ProAccountPayload extends BasicAccountPayload {
     
+    private static final long serialVersionUID = 1L;
+
     private String cardNumber;
     private String cardCode;
     private String cardMonth;
