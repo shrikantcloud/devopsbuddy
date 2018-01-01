@@ -27,6 +27,7 @@ import com.devopsbuddy.backend.persistence.domain.backend.Role;
 import com.devopsbuddy.backend.persistence.domain.backend.User;
 import com.devopsbuddy.backend.persistence.domain.backend.UserRole;
 import com.devopsbuddy.backend.service.PlanService;
+import com.devopsbuddy.backend.service.S3Service;
 import com.devopsbuddy.backend.service.UserService;
 import com.devopsbuddy.enums.PlansEnum;
 import com.devopsbuddy.enums.RolesEnum;
@@ -57,6 +58,9 @@ public class SignupController {
 
     @Autowired
     private PlanService         planService;
+    
+    @Autowired
+    private S3Service s3Service;
 
     @RequestMapping(value = SIGNUP_URL_MAPPING, method = RequestMethod.GET)
     public String signupGet(@RequestParam("planId") int planId, ModelMap model) {
@@ -108,7 +112,7 @@ public class SignupController {
         
         // Save profile image on Amazon s3 and stores the URL in the users record.
         if(file!=null && !file.isEmpty()) {
-            String profileImageUrl = null;
+            String profileImageUrl = s3Service.storeProfileImage(file, user.getUsername());
             if(profileImageUrl!=null) {
                 user.setProfileImageUrl(profileImageUrl);
             } else {

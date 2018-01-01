@@ -82,6 +82,20 @@
 			<artifactId>hibernate-validator</artifactId>
 		</dependency>
 		
+		<!-- AWS dependencies -->
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk</artifactId>
+			<version>1.11.256</version>
+		</dependency>
+		
+		<!-- commons dependency -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.6</version>
+		</dependency>
+		
 		<!-- Test Dependency -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
