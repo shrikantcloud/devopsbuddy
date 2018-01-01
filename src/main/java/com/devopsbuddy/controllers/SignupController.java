@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.devopsbuddy.backend.persistence.domain.backend.Plan;
 import com.devopsbuddy.backend.persistence.domain.backend.Role;
@@ -68,6 +69,7 @@ public class SignupController {
 
     @RequestMapping(value = SIGNUP_URL_MAPPING, method = RequestMethod.POST)
     public String signupPost(@RequestParam(name = "planId", required = true) int planId,
+            @RequestParam(name = "file" , required=false) MultipartFile file, 
             @ModelAttribute(PAYLOAD_MODEL_KEY_NAME) @Valid ProAccountPayload payload, ModelMap model) throws IOException {
 
         if (planId != PlansEnum.BASIC.getId() && planId != PlansEnum.PRO.getId()) {
@@ -100,9 +102,19 @@ public class SignupController {
             return SUBSCRIPTION_VIEW_NAME;
         }
         
-        // certain info that users does nnot set for ex: profile image url or strip id plan and role
+        // certain info that users does not set for ex: profile image url or strip id plan and role
         LOG.debug("Transforming user payload into User domain object");
         User user = UserUtils.fromWebUserToDomainUser(payload);
+        
+        // Save profile image on Amazon s3 and stores the URL in the users record.
+        if(file!=null && !file.isEmpty()) {
+            String profileImageUrl = null;
+            if(profileImageUrl!=null) {
+                user.setProfileImageUrl(profileImageUrl);
+            } else {
+                LOG.warn("There was a problem uploading the profile image to s3. the users profile will be created without the image");
+            }
+        }
         
         //Sets the plan and the roles (depending on the chosen plan)
         LOG.debug("Retriving plan from the database");

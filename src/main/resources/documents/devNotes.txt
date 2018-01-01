@@ -32,3 +32,5 @@ Forgot password Email Link URL format:-
 http://<hostname>:<port>/changeuserpassword?id=<id>&token=<token>
 
 =======================================
+
+later on check for username validation on signup

@@ -63,8 +63,8 @@
 						<div class="form-group">
 							<div th:if="${duplicatedEmail}">
 								<label for="email"
-									th:text="#{signup.form.error.email.already.exists}"></label> <input
-									type="email" id="email" th:field="*{email}"
+									th:text="#{signup.form.error.email.already.exists}"></label> 
+								<input type="email" id="email" th:field="*{email}"
 									class="form-control fieldError" />
 							</div>
 							<div th:if="${duplicatedEmail == null}">
@@ -98,6 +98,10 @@
 							<label for="description" th:text="#{signup.form.description}"></label>
 							<textarea id="description" th:field="*{description}" rows="4"
 								class="form-control"></textarea>
+						</div>
+						<div class="form-group">
+							<label for="file" th:text="#{signup.form.profile.image.url}"></label>
+							<input type="file" id="file" name="file" class="form-control" />
 						</div>
 						<div class="form-group">
 							<label for="country" th:text="#{signup.form.country}"></label> <select
