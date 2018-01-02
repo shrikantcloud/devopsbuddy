@@ -33,4 +33,6 @@ http://<hostname>:<port>/changeuserpassword?id=<id>&token=<token>
 
 =======================================
 
+Stripe documentation : https://stripe.com/docs/api?lang=java
+
 later on check for username validation on signup
