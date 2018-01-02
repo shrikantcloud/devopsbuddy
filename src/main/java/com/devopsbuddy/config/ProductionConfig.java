@@ -14,7 +14,7 @@ import com.devopsbuddy.backend.service.SmtpEmailService;
 @PropertySource("classpath:application-prod.properties")
 @PropertySource("file:F:/.devopsbuddy/stripe.properties")
 public class ProductionConfig {
-    
+
     @Value("${stripe.prod.private.key}")
     private String stripeProdKey;
 
@@ -22,7 +22,7 @@ public class ProductionConfig {
     public EmailService emailService() {
         return new SmtpEmailService();
     }
-    
+
     @Bean
     public String stripeKey() {
         return stripeProdKey;

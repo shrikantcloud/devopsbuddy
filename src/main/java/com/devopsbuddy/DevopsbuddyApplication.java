@@ -27,9 +27,9 @@ public class DevopsbuddyApplication implements CommandLineRunner {
 
     @Autowired
     private UserService         userService;
-    
+
     @Autowired
-    private PlanService planService;
+    private PlanService         planService;
 
     @Value("${webmaster.username}")
     private String              webmasterUsername;
@@ -47,7 +47,7 @@ public class DevopsbuddyApplication implements CommandLineRunner {
         LOG.info("Creating Basic and Pro plans in the database");
         planService.createPlan(PlansEnum.BASIC.getId());
         planService.createPlan(PlansEnum.PRO.getId());
-        
+
         User user = UserUtils.createBasicUser(webmasterUsername, webmasterEmail);
         user.setPassword(webmasterPassword);
         Set<UserRole> userRoles = new HashSet<>();

@@ -35,10 +35,10 @@ public class StripeIntegrationTest {
     public static final int    TEST_CC_CVC_NUMBER   = 2019;
 
     @Autowired
-    private StripeService       stripeService;
+    private StripeService      stripeService;
 
     @Autowired
-    private String              stripeKey;
+    private String             stripeKey;
 
     @Before
     public void init() {

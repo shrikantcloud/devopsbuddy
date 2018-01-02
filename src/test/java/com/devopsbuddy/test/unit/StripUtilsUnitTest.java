@@ -14,7 +14,7 @@ import com.devopsbuddy.utils.StripeUtils;
 import com.devopsbuddy.web.domain.fontend.ProAccountPayload;
 
 public class StripUtilsUnitTest {
-    
+
     @SuppressWarnings("unchecked")
     @Test
     public void createStripeTokenParamsFromUserPayload() {
@@ -25,9 +25,9 @@ public class StripUtilsUnitTest {
         payload.setCardCode(cardCode);
         String cardMonth = String.valueOf(StripeIntegrationTest.TEST_CC_EXPIRY_MONTH);
         payload.setCardMonth(cardMonth);
-        String cardYear = String.valueOf(LocalDate.now(Clock.systemUTC()).getYear() +1);
+        String cardYear = String.valueOf(LocalDate.now(Clock.systemUTC()).getYear() + 1);
         payload.setCardYear(cardYear);
-        
+
         Map<String, Object> tokenParams = StripeUtils.extractTokenParamsFromSignupPayload(payload);
         Map<String, Object> cardParams = (Map<String, Object>) tokenParams.get(StripeUtils.STRIPE_CARD_KEY);
         assertThat(cardNumber, is(cardParams.get(StripeUtils.STRIPE_CARD_NUMBER_KEY)));
@@ -35,6 +35,5 @@ public class StripUtilsUnitTest {
         assertThat(cardMonth, is(String.valueOf(cardParams.get(StripeUtils.STRIPE_EXPIRY_MONTH_KEY))));
         assertThat(cardYear, is(String.valueOf(cardParams.get(StripeUtils.STRIPE_EXPIRY_YEAR_KEY))));
     }
-    
 
 }

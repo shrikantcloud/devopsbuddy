@@ -40,9 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     public static final String[] PUBLIC_MATCHERS = { "/webjars/**", "/css/**", "/js/**", "/images/**", "/", "/about/**", "/contact/**",
                                                      "/error/**/*", "/console/**", ForgotMyPasswordController.FORGOT_PASSWORD_URL_MAPPING,
-                                                     ForgotMyPasswordController.CHANGE_PASSWORD_PATH,
-                                                     SignupController.SIGNUP_URL_MAPPING
-    };
+                                                     ForgotMyPasswordController.CHANGE_PASSWORD_PATH, SignupController.SIGNUP_URL_MAPPING };
     public static final String   LOGIN_URL       = "/login";
     public static final String   PAYLOAD_URL     = "/payload";
     public static final String   ERROR_URL       = "/login?error";

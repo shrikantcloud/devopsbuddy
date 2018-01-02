@@ -1,6 +1,8 @@
 package com.devopsbuddy.controllers;
 
 import java.io.IOException;
+import java.time.Clock;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -8,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -19,11 +22,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.devopsbuddy.backend.persistence.domain.backend.Plan;
 import com.devopsbuddy.backend.persistence.domain.backend.Role;
@@ -35,6 +40,8 @@ import com.devopsbuddy.backend.service.StripeService;
 import com.devopsbuddy.backend.service.UserService;
 import com.devopsbuddy.enums.PlansEnum;
 import com.devopsbuddy.enums.RolesEnum;
+import com.devopsbuddy.exceptions.S3Exception;
+import com.devopsbuddy.exceptions.StripeException;
 import com.devopsbuddy.utils.StripeUtils;
 import com.devopsbuddy.utils.UserUtils;
 import com.devopsbuddy.web.domain.fontend.ProAccountPayload;
@@ -57,6 +64,8 @@ public class SignupController {
     public static final String  SIGNED_UP_MESSAGE_KEY   = "signedUp";
 
     public static final String  ERROR_MESSAGE_KEY       = "message";
+
+    private static final String GENERIC_ERROR_VIEW_NAME = "error/genericerror";
 
     @Autowired
     private UserService         userService;
@@ -157,17 +166,17 @@ public class SignupController {
                 model.addAttribute(ERROR_MESSAGE_KEY, "one or more credit card details is null or empty");
                 return SUBSCRIPTION_VIEW_NAME;
             }
-            
+
             // if user has selected pro account, create the stripe customer to store the customer id in the db
             Map<String, Object> stripeTokenParams = StripeUtils.extractTokenParamsFromSignupPayload(payload);
-            Map<String, Object> customerParams = new HashMap<> ();
-            customerParams.put("description", "Devops customer. Username:"+payload.getUsername());
+            Map<String, Object> customerParams = new HashMap<>();
+            customerParams.put("description", "Devops customer. Username:" + payload.getUsername());
             customerParams.put("email", payload.getEmail());
             customerParams.put("plan", selectedPlan.getId());
             LOG.info("Subscribing the customer plan to {}", selectedPlan.getName());
             String stripeCustomerId = stripeService.createCustomer(stripeTokenParams, customerParams);
             LOG.info("Username {} has been subscribed to Stripe", payload.getUsername());
-            
+
             user.setStripeCustomerId(stripeCustomerId);
 
             registeredUser = userService.createUser(user, PlansEnum.PRO, roles);
@@ -181,6 +190,19 @@ public class SignupController {
         model.addAttribute(SIGNED_UP_MESSAGE_KEY, "true");
 
         return SUBSCRIPTION_VIEW_NAME;
+    }
+
+    // controller based exception handling - controller advice
+    @ExceptionHandler({ StripeException.class, S3Exception.class })
+    public ModelAndView signupException(HttpServletRequest request, Exception e) {
+        LOG.error("Request {} raised exception {}", request.getRequestURL(), e);
+
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("exception", e);
+        mav.addObject("url", request.getRequestURL());
+        mav.addObject("timestamp", LocalDate.now(Clock.systemUTC()));
+        mav.setViewName(GENERIC_ERROR_VIEW_NAME);
+        return mav;
     }
 
     private void checkForDuplicates(ProAccountPayload payload, ModelMap model) {

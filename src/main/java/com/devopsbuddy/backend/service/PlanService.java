@@ -11,23 +11,23 @@ import com.devopsbuddy.enums.PlansEnum;
 @Service
 @Transactional(readOnly = true)
 public class PlanService {
-    
+
     @Autowired
     private PlanRepository planRepository;
-    
+
     public Plan findPlanById(int planId) {
         return planRepository.findOne(planId);
     }
-    
+
     @Transactional
     public Plan createPlan(int planId) {
         Plan plan = null;
-        if(planId == 1) {
+        if (planId == 1) {
             plan = planRepository.save(new Plan(PlansEnum.BASIC));
-        } else if(planId == 2) {
+        } else if (planId == 2) {
             plan = planRepository.save(new Plan(PlansEnum.PRO));
         } else {
-            throw new IllegalArgumentException("Plan id:"+planId+ " not recognized!");
+            throw new IllegalArgumentException("Plan id:" + planId + " not recognized!");
         }
         return plan;
     }

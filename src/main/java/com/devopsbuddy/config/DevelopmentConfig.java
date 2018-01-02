@@ -18,9 +18,9 @@ import com.devopsbuddy.backend.service.MockEmailService;
 public class DevelopmentConfig {
 
     private static final String H2_CONSOLE_URL = "/console/*";
-    
+
     @Value("${stripe.test.private.key}")
-    private String stripeDevKey;
+    private String              stripeDevKey;
 
     @Bean
     public EmailService emailService() {
@@ -33,7 +33,7 @@ public class DevelopmentConfig {
         bean.addUrlMappings(H2_CONSOLE_URL);
         return bean;
     }
-    
+
     @Bean
     public String stripeKey() {
         return stripeDevKey;
